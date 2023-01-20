@@ -45,19 +45,27 @@ def local_transfer():
     # Note, the initial amounts are not needed yet, but will be needed once I
     # add the insufficient funds case, so I'm adding them now.
     ledger = []
-    ledger.append(make_journal_entry(
-        "customer deposit",
-        debit("STD:Cash", source_starting_balance),
-        credit(source, source_starting_balance)
-    ))
+
+    def customer_deposit(account, amount):
+        return make_journal_entry(
+            "customer deposit",
+            debit("STD:Cash", amount),
+            credit(account, amount)
+        )
+
+    ledger.append(customer_deposit(source, source_starting_balance))
+
     # Action:
     # Transfer money from source to destination, leaving some money in each
-    transfer = make_journal_entry(
-        f"Transfer from {source} to {destination}",
-        credit(destination, transfer_amount),
-        debit(source, transfer_amount)
-    )
-    ledger.append(transfer)
+    def transfer(source, destination, amount):
+        return make_journal_entry(
+            f"Transfer from {source} to {destination}",
+            credit(destination, amount),
+            debit(source, amount)
+        )
+
+    the_transfer = transfer(source, destination, transfer_amount)
+    ledger.append(the_transfer)
     # Outcome:
     # Verify that the new transaction has been added to the ledger.
-    assert_that(ledger).contains(transfer)
+    assert_that(ledger).contains(the_transfer)
