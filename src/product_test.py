@@ -1,19 +1,10 @@
+from src.product import credit, debit, make_journal_entry
 from src.testhelpers import test, ARBITRARY
 from assertpy import assert_that
 
 
 @test
 def compute_account_balance():
-    def credit(account_id, amount):
-        return True, account_id, amount
-
-    def debit(account_id, amount):
-        return False, account_id, amount
-
-    def make_journal_entry(description: str, *credits_and_debits):
-        return dict(description=description, credits=[(c[1], c[2]) for c in credits_and_debits if c[0]],
-                    debits=[(d[1], d[2]) for d in credits_and_debits if not d[0]])
-
     # Initial state:
     # There is a ledger with 3 transactions: two credits to account A and one debit.
     ledger = []
@@ -44,16 +35,6 @@ def compute_account_balance():
 
 @test
 def local_transfer():
-    def credit(account_id, amount):
-        return True, account_id, amount
-
-    def debit(account_id, amount):
-        return False, account_id, amount
-
-    def make_journal_entry(description: str, *credits_and_debits):
-        return dict(description=description, credits=[(c[1], c[2]) for c in credits_and_debits if c[0]],
-                    debits=[(d[1], d[2]) for d in credits_and_debits if not d[0]])
-
     # Irrelevant details:
     source_starting_balance = ARBITRARY.many_dollars()
     transfer_amount = ARBITRARY.few_dollars()
