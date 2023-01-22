@@ -26,8 +26,13 @@ def compute_account_balance():
     ))
     # Action:
     # Compute sum of credits minus debits for account A
-    total_a = sum(
-        sum(c[1] for c in e['credits'] if c[0] == "a") - sum(d[1] for d in e['debits'] if d[0] == "a") for e in ledger)
+    
+    def total_credits_minus_debits(ledger, account):
+        return sum(
+            sum(c[1] for c in e['credits'] if c[0] == account) - sum(d[1] for d in e['debits'] if d[0] == account) for e
+            in ledger)
+
+    total_a = total_credits_minus_debits(ledger, "a")
     # Outcome:
     # Verify that the sum is correct.
     assert_that(total_a).is_equal_to(75)
