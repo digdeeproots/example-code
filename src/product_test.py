@@ -5,9 +5,20 @@ from assertpy import assert_that
 
 @test
 def compute_account_balance():
+    class Bank:
+        def __init__(self, ledger):
+            self.ledger = ledger
+
+        def total_credits_minus_debits(self, account):
+            return sum(
+                sum(c[1] for c in e['credits'] if c[0] == account) - sum(d[1] for d in e['debits'] if d[0] == account)
+                for e
+                in self.ledger)
+
     # Initial state:
     # There is a ledger with 3 transactions: two credits to account A and one debit.
     ledger = []
+    bank = Bank(ledger)
     ledger.append(make_journal_entry(
         "first",
         credit("a", 100),
@@ -26,16 +37,6 @@ def compute_account_balance():
     ))
     # Action:
     # Compute sum of credits minus debits for account A
-
-    class Bank:
-        def __init__(self, ledger):
-            self.ledger = ledger
-        def total_credits_minus_debits(self, account):
-            return sum(
-                sum(c[1] for c in e['credits'] if c[0] == account) - sum(d[1] for d in e['debits'] if d[0] == account) for e
-                in self.ledger)
-
-    bank = Bank(ledger)
     total_a = bank.total_credits_minus_debits("a")
     # Outcome:
     # Verify that the sum is correct.
