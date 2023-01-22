@@ -35,7 +35,8 @@ def compute_account_balance():
                 sum(c[1] for c in e['credits'] if c[0] == account) - sum(d[1] for d in e['debits'] if d[0] == account) for e
                 in self.ledger)
 
-    total_a = Bank(ledger).total_credits_minus_debits("a")
+    bank = Bank(ledger)
+    total_a = bank.total_credits_minus_debits("a")
     # Outcome:
     # Verify that the sum is correct.
     assert_that(total_a).is_equal_to(75)
