@@ -6,8 +6,8 @@ from assertpy import assert_that
 @test
 def compute_account_balance():
     class Bank:
-        def __init__(self, ledger):
-            self.ledger = ledger
+        def __init__(self):
+            self.ledger = []
 
         def total_credits_minus_debits(self, account):
             return sum(
@@ -17,8 +17,7 @@ def compute_account_balance():
 
     # Initial state:
     # There is a ledger with 3 transactions: two credits to account A and one debit.
-    ledger = []
-    bank = Bank(ledger)
+    bank = Bank()
     bank.ledger.append(make_journal_entry(
         "first",
         credit("a", 100),
