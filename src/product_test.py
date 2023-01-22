@@ -19,18 +19,18 @@ def compute_account_balance():
     # There is a ledger with 3 transactions: two credits to account A and one debit.
     ledger = []
     bank = Bank(ledger)
-    ledger.append(make_journal_entry(
+    bank.ledger.append(make_journal_entry(
         "first",
         credit("a", 100),
         debit("b", 100)
     ))
-    ledger.append(make_journal_entry(
+    bank.ledger.append(make_journal_entry(
         "second",
         credit("a", 25),
         credit("b", 75),
         debit("c", 100)
     ))
-    ledger.append(make_journal_entry(
+    bank.ledger.append(make_journal_entry(
         "third",
         debit("a", 50),
         credit("c", 50)
