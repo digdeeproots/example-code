@@ -1,4 +1,4 @@
-from src.product import credit, debit, make_journal_entry
+from src.product import credit, debit, make_journal_entry, customer_deposit, transfer
 from src.testhelpers import test, ARBITRARY
 from assertpy import assert_that
 
@@ -45,25 +45,10 @@ def local_transfer():
     # Note, the initial amounts are not needed yet, but will be needed once I
     # add the insufficient funds case, so I'm adding them now.
     ledger = []
-
-    def customer_deposit(account, amount):
-        return make_journal_entry(
-            "customer deposit",
-            debit("STD:Cash", amount),
-            credit(account, amount)
-        )
-
     ledger.append(customer_deposit(source, source_starting_balance))
 
     # Action:
     # Transfer money from source to destination, leaving some money in each
-    def transfer(source, destination, amount):
-        return make_journal_entry(
-            f"Transfer from {source} to {destination}",
-            credit(destination, amount),
-            debit(source, amount)
-        )
-
     the_transfer = transfer(source, destination, transfer_amount)
     ledger.append(the_transfer)
     # Outcome:

@@ -9,3 +9,19 @@ def debit(account_id, amount):
 def make_journal_entry(description: str, *credits_and_debits):
     return dict(description=description, credits=[(c[1], c[2]) for c in credits_and_debits if c[0]],
                 debits=[(d[1], d[2]) for d in credits_and_debits if not d[0]])
+
+
+def customer_deposit(account, amount):
+    return make_journal_entry(
+        "customer deposit",
+        debit("STD:Cash", amount),
+        credit(account, amount)
+    )
+
+
+def transfer(source, destination, amount):
+    return make_journal_entry(
+        f"Transfer from {source} to {destination}",
+        credit(destination, amount),
+        debit(source, amount)
+    )
