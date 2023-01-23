@@ -15,25 +15,25 @@ def compute_account_balance():
                 for e
                 in self.ledger)
 
+        def record(self, entry):
+            self.ledger.append(entry)
+
     # Initial state:
     # There is a ledger with 3 transactions: two credits to account A and one debit.
     bank = Bank()
-    bank.ledger.append(make_journal_entry(
+    bank.record(make_journal_entry(
         "first",
         credit("a", 100),
-        debit("b", 100)
-    ))
-    bank.ledger.append(make_journal_entry(
+        debit("b", 100)))
+    bank.record(make_journal_entry(
         "second",
         credit("a", 25),
         credit("b", 75),
-        debit("c", 100)
-    ))
-    bank.ledger.append(make_journal_entry(
+        debit("c", 100)))
+    bank.record(make_journal_entry(
         "third",
         debit("a", 50),
-        credit("c", 50)
-    ))
+        credit("c", 50)))
     # Action:
     # Compute sum of credits minus debits for account A
     total_a = bank.total_credits_minus_debits("a")
