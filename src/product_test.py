@@ -1,23 +1,10 @@
-from src.product import credit, debit, make_journal_entry, customer_deposit, transfer
+from src.product import credit, debit, make_journal_entry, customer_deposit, transfer, Bank
 from src.testhelpers import test, ARBITRARY
 from assertpy import assert_that
 
 
 @test
 def compute_account_balance():
-    class Bank:
-        def __init__(self):
-            self.ledger = []
-
-        def total_credits_minus_debits(self, account):
-            return sum(
-                sum(c[1] for c in e['credits'] if c[0] == account) - sum(d[1] for d in e['debits'] if d[0] == account)
-                for e
-                in self.ledger)
-
-        def record(self, entry):
-            self.ledger.append(entry)
-
     # Initial state:
     # There is a ledger with 3 transactions: two credits to account A and one debit.
     bank = Bank()

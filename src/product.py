@@ -25,3 +25,17 @@ def transfer(source, destination, amount):
         credit(destination, amount),
         debit(source, amount)
     )
+
+
+class Bank:
+    def __init__(self):
+        self.ledger = []
+
+    def total_credits_minus_debits(self, account):
+        return sum(
+            sum(c[1] for c in e['credits'] if c[0] == account) - sum(d[1] for d in e['debits'] if d[0] == account)
+            for e
+            in self.ledger)
+
+    def record(self, entry):
+        self.ledger.append(entry)
